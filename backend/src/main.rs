@@ -14,6 +14,9 @@ use uuid::Uuid;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // reqwestのテスト
+    fetch_request().await?;
+
     // 環境変数読み込み
     dotenv().expect(".env file not found");
     // /hello-worldへのgetリクエストをhello_worldハンドラにパス
@@ -34,6 +37,13 @@ async fn hello_world() -> String {
     //"Hello, World!"
 }
 
+async fn fetch_request() -> anyhow::Result<()> {
+    let url = "https://example.com";
+    let contents = reqwest::get(url).await?.text().await?;
+
+    println!("text: {:?}", contents);
+    Ok(())
+}
 
 fn build_auth_headers(token: &str, secret: &str) -> (String, String, String, String) {
     // 1. タイムスタンプ（ミリ秒）を取得
